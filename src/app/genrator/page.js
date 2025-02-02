@@ -6,7 +6,7 @@ import Quagga from "quagga";
 
 const GenratorPage = () => {
     const { register, handleSubmit } = useForm();
-    const [barcodeData, setBarcodeData] = useState("");
+    const [barcodeData, setBarcodeData] = useState(""); // Store the scanned barcode data
     const scannerRef = useRef(null); // Reference to scanner div
 
     const onSubmit = (data) => {
@@ -44,7 +44,8 @@ const GenratorPage = () => {
 
                 Quagga.onDetected((result) => {
                     if (result?.codeResult?.code) {
-                        alert("Scanned Data: " + result.codeResult.code);
+                        // Update the barcodeData state with the scanned data
+                        setBarcodeData(result.codeResult.code);
                         Quagga.stop();
                     } else {
                         console.warn("No barcode detected.");
@@ -53,7 +54,6 @@ const GenratorPage = () => {
             }
         );
     };
-
 
     return (
         <div>
@@ -79,6 +79,14 @@ const GenratorPage = () => {
             </div>
 
             <button onClick={startScanner}>Scan Barcode</button>
+
+            {/* Display Scanned Data */}
+            {barcodeData && (
+                <div>
+                    <h3>Scanned Barcode Data:</h3>
+                    <p>{barcodeData}</p>
+                </div>
+            )}
         </div>
     );
 };
