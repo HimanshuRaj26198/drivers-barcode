@@ -8,11 +8,20 @@ const GenratorPage = () => {
     const { register, handleSubmit } = useForm();
     const [barcodeData, setBarcodeData] = useState(""); // Store the scanned barcode data
     const scannerRef = useRef(null); // Reference to scanner div
+    const barcodeRef = useRef(null); // Reference to barcode SVG element
 
     const onSubmit = (data) => {
         const jsonData = JSON.stringify(data);
         setBarcodeData(jsonData);
-        JsBarcode("#barcode", jsonData, { format: "CODE128", width: 0.5, height: 100 });
+
+        // Generate barcode with JsBarcode after setting the data
+        if (barcodeRef.current) {
+            JsBarcode(barcodeRef.current, jsonData, {
+                format: "CODE128",
+                width: 0.5,
+                height: 100,
+            });
+        }
     };
 
     const startScanner = () => {
@@ -72,7 +81,8 @@ const GenratorPage = () => {
             </form>
 
             <div className="barcode_container" style={{ width: "500px", height: "auto" }}>
-                <svg id="barcode"></svg>
+                {/* Barcode SVG rendered using JsBarcode */}
+                <svg ref={barcodeRef}></svg>
             </div>
 
             {/* Scanner Container (Now using useRef) */}
