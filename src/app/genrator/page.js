@@ -46,6 +46,8 @@ const GenratorPage = () => {
                     if (result?.codeResult?.code) {
                         // Update the barcodeData state with the scanned data
                         setBarcodeData(result.codeResult.code);
+
+                        // Stop the scanner after detection
                         Quagga.stop();
                     } else {
                         console.warn("No barcode detected.");
